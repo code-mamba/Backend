@@ -1,0 +1,23 @@
+[
+    {
+      "caption": "Love for all, Hatred for None",
+	  "tags":["#Dhanush","#Santha"],
+      "photo": "https://img.freepik.com/free-photo/beautiful-scenery-phragmites-plants-by-sea-with-swimming-pelican-sunset_181624-37787.jpg?w=2000",
+      "like": 32
+    },
+    {
+      "caption": "Exploring new places",
+	  "tags": ["#Dhanush","#Andrea"],
+      "photo": "https://worldofwanderlust.com/wp-content/uploads/2014/07/IMG_9316.jpg",
+      "like": 20
+    },
+    {
+
+      "caption": "A day at the beach",
+	  "tags": ["#Kural","#Andrea"],
+      "photo": "https://thumbs.dreamstime.com/b/tropical-beach-scene-6049577.jpg",
+      "like": 45
+    
+    }
+    
+  ]
