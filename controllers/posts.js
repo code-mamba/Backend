@@ -13,23 +13,34 @@ exports.getAllUsersPosts = asyncHandler(async (req, res, next) => {
 // @route Get/api/v1/posts/:id
 // @access Public
 exports.getSingleUserPosts = asyncHandler(async (req, res, next) => {
-  const post = await Post.findById(req.params.id);
-  res.status(200).json({ success: true, data: post });
+  console.log(req.params.id)
+  const post = await Post.find({userId: req.params.id});
+  
   if (!post) {
-    res.status(400).json({ success: false });
+    return res.status(400).json({ success: false });
   }
 
-  // res.status(400).json({success:false})
-  next(error);
+  res.status(200).json({success:true,data:post, count:post.length})
 });
 // @desc  create new posts
 // @route POST /api/v1/posts
 // @access Private
 exports.createPost = asyncHandler(async (req, res, next) => {
-  const post = await Post.create(req.body);
-  res.status(201).json({ success: true, data: post });
-
-  res.status(400).json({ success: false });
+  const{caption,userName,userId} =req.body;
+  const{filename} = req.file
+  const post = await Post.create({
+    userName:userName,
+    userId:userId,
+    caption:caption,
+    photo: filename
+  });
+  if(post){
+    res.status(201).json({ success: true, data: post });
+  }
+  else{
+    res.status(400).json({ success: false });
+  }
+  
 });
 // @desc  update posts
 // @route PUT/api/v1/posts/:id
@@ -57,5 +68,4 @@ exports.deletePost = asyncHandler(async (req, res, next) => {
   }
   res.status(200).json({ success: true, data: {} });
 
-  res.status(400).json({ success: false });
 });

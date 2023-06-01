@@ -1,11 +1,10 @@
 const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const User = require("../models/User");
-const { OAuth2Client } = require("google-auth-library");
-const client = new OAuth2Client(process.env.CLIENT_ID);
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 var nodemailer = require("nodemailer");
+const { default: mongoose } = require("mongoose");
 // @desc    Register user
 // @route  POST/api/v1/auth/register
 // @access public
@@ -43,31 +42,7 @@ exports.login = asyncHandler(async (req, res, next) => {
 
   sendTokenResponse(user, 200, res);
 });
-exports.googleLogin = asyncHandler(async (req, res, next) => {
-  const { token } = req.body;
-  try {
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: process.env.CLIENT_ID,
-    });
-    const { name, email, picture } = ticket.getPayload();
-    let user = await User.findOne({ email });
-    if (!user) {
-      user = await User.create({
-        name,
-        email,
-        picture,
-      });
-    } else {
-      user.name = name;
-      user.picture = picture;
-      await user.save();
-    }
-    sendTokenResponse(user, 201, res);
-  } catch (err) {
-    return next(new ErrorResponse("Invalid token", 400));
-  }
-});
+
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const { email } = req.body;
   console.log(email)
@@ -122,9 +97,6 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   try {
     const verify = jwt.verify(token, secret);
     const email = verify.email;
-    console.log("line102", id);
-    console.log("line103", email);
-    console.log("line104token", token);
 
     const redirectUrl = `http://localhost:3000/resetPassword?email=${encodeURIComponent(
       email
@@ -158,13 +130,23 @@ exports.setResetPassword = asyncHandler(async (req, res, next) => {
   }
 });
 exports.getMe = asyncHandler(async (req, res, next) => {
-  console.log("line72", req.user.id);
+  const id = req.params.id
+  const isValidObjectId = mongoose.Types.ObjectId.isValid(id)
+  if(!isValidObjectId){
+    return res.status(400).json({error:'Invalid user Id'})
+  }
+  const user = await User.findById(id)
+  if(!user){
+    return res.status(404).json({error:'User Not found'})
+  }
+  res.status(200).json({data:user})
 });
 
 // Get token from model and send cookie to response
 
 const sendTokenResponse = (user, statusCode, res) => {
   const token = user.getSignedJwtToken();
+  console.log(token)
 
   const options = {
     expires: new Date(
@@ -177,3 +159,15 @@ const sendTokenResponse = (user, statusCode, res) => {
     .cookie("token", token, options)
     .json({ success: true, token });
 };
+// @desc Log user out / clear cookie
+// @route GET/api/v1/auth/logout
+exports.logout = asyncHandler(async(req,res,next)=>{
+  res.cookie('token','none',{
+    expires: new Date(Date.now()+10*1000),
+    httpOnly: true
+  })
+  res.status(200).json({
+    success:true,
+    data:{}
+  })
+})

@@ -1,14 +1,18 @@
 const express = require('express')
-const {register,login, googleLogin, getMe, forgotPassword, resetPassword, setResetPassword} = require('../controllers/auth')
+const {register,login, googleLogin, getMe, forgotPassword, resetPassword, setResetPassword, logout} = require('../controllers/auth')
 const{protect} = require('../middleware/auth')
+const upload = require('../middleware/multerMiddleware')
+
 
 const router = express.Router()
 
 router.post('/register',register)
 router.post('/login',login)
-router.post('/google',googleLogin)
-router.get('/me',protect,getMe)
+router.get('/me/:id',getMe)
 router.post('/forgot-password',forgotPassword)
 router.get('/reset-password/:id/:token',resetPassword)
 router.post('/reset-password/:id/:token',setResetPassword)
+router.get('/logout',logout)
+
+
 module.exports = router

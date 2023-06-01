@@ -20,6 +20,8 @@ const logger = morgan('dev')
 // Route files
 const posts = require("./routes/posts");
 const auth = require("./routes/auth")
+const saved = require("./routes/savedPost")
+const request = require("./routes/request")
 
 const app = express();
 // Body parser
@@ -29,10 +31,17 @@ app.use(cors())
 
 // logger
 app.use(logger)
+app.use('/public',express.static('./public'))
+
 
 // Mount routers
 app.use("/api/v1/posts", posts);
 app.use("/api/v1/auth",auth)
+app.use("/api/v1/saved",saved)
+app.use("/api/v1/request",request)
+app.use("/api/v1/request/unfriend",request)
+
+
 
 app.use(errorHandler);
 

@@ -18,6 +18,33 @@ const UserSchema = new mongoose.Schema({
     minlength: 6,
     select: false,
   },
+  profilepic:{
+    type:String,
+    default: 'no-photo.jpg',
+  },
+  coverImage:{
+    type: String,
+    default:'no-photo.jpg'
+  },
+
+  bio:{
+    type:String,
+  },
+  city:{
+    type:String,
+  },
+  country:{
+    type: String,
+  },
+  relationship:{
+    type:String
+  },
+	pendingrequest:[{
+		type:mongoose.Schema.ObjectId
+	}],
+  friends:[{
+    type: mongoose.Schema.ObjectId
+  }],
   resetPasswordToken: String,
   resetPasswordExpire: Date,
   createdAt: {
