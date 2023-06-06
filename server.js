@@ -6,6 +6,7 @@ const morgan = require('morgan')
 const errorHandler = require("./middleware/error");
 const cookieParser = require("cookie-parser")
 const cors = require('cors')
+const {Server} = require("socket.io")
 
 
 //  Load env vars
@@ -22,6 +23,10 @@ const posts = require("./routes/posts");
 const auth = require("./routes/auth")
 const saved = require("./routes/savedPost")
 const request = require("./routes/request")
+const getFriends = require("./routes/getFriends")
+const friendspost = require("./routes/friendspost")
+const conversation = require("./routes/conversation")
+const messages = require('./routes/messages')
 
 const app = express();
 // Body parser
@@ -40,6 +45,10 @@ app.use("/api/v1/auth",auth)
 app.use("/api/v1/saved",saved)
 app.use("/api/v1/request",request)
 app.use("/api/v1/request/unfriend",request)
+app.use("/api/v1/getfriends",getFriends)
+app.use("/api/v1/friendspost",friendspost)
+app.use("/api/v1/conversation",conversation)
+app.use("/api/v1/messages",messages)
 
 
 
@@ -53,7 +62,20 @@ const server = app.listen(
     `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold
   )
 );
+const io = new Server(server,{
+  cors:{
+    origin: "http://localhost:3000",
+    methods: ["GET","POST"]
+  }
+})
 
+io.on("connection",(socket)=>{
+  console.log(`user connected ${socket.id}`)
+
+  socket.on("disconnect",()=>{
+    console.log("user disconnected", socket.id)
+  })
+})
 // Handle unhandled promise rejections
 process.on("unhandledRejection", (err, promise) => {
   console.log(`Error:${err.message}`.red);

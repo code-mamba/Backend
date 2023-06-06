@@ -12,6 +12,7 @@ exports.addRequest = asyncHandler(async(req,res,next)=>{
 	 res.status(200).json({success:true, data: request})
 	 console.log(request)
 })
+
 exports.getUserRequests = asyncHandler(async(req,res,next)=>{
 	const{id} = req.params
 	const myId = id
@@ -25,6 +26,9 @@ exports.getUserRequests = asyncHandler(async(req,res,next)=>{
 	res.status(200).json({success:true,data})
 
 })
+/* when a user confirms the friend request that particular requested id is stored in my friendslist,
+  And my id is store in his friends field and delete the requested id from my pendingrequest*/
+
 exports.confirmRequest = asyncHandler(async(req,res,next)=>{
 	const{userId}= req.params
 	const{myId} = req.body
@@ -34,9 +38,12 @@ exports.confirmRequest = asyncHandler(async(req,res,next)=>{
 	if(!confirm){
 		return res.status(400).json({success:false, message:'cannot find Id'})
 	}
+	const result = await User.findByIdAndUpdate({_id:userId},{$push:{friends:myId}})
+	console.log("resut",result)
 	const deleteFromPending = await User.findByIdAndUpdate({_id:myId},{$pull:{pendingrequest:userId}})
 	res.status(200).json({success:true, data:deleteFromPending})
 })
+
 exports.ignoreRequest = asyncHandler(async(req,res,next)=>{
 	console.log(req.params)
 	const{userId,myId} = req.params
@@ -46,17 +53,17 @@ exports.ignoreRequest = asyncHandler(async(req,res,next)=>{
 	}
 	res.status(200).json({success:true, ignore})
 })
-
+/* when a user unfriend the button my Id is remove from the other's friends array
+   And their id is remove from my friend array */
+   
 exports.unFriend = asyncHandler(async(req,res,next)=>{
 	console.log("hello")
 	const{myId, userId} = req.params
-
-	console.log('Dhanush',myId)
-	console.log("tkr", userId)
-	const unFriend = await User.findByIdAndUpdate({_id:userId},{$pull:{friends:myId}})
+	const unFriend = await User.findByIdAndUpdate({_id:myId},{$pull:{friends:userId}})
 	if(!unFriend){
 		return res.status(400).json({success:false, message:"something went wrong"})
 	}
-	res.status(200).json({success:true, data:unFriend})
+	const result = await User.findByIdAndUpdate({_id:userId},{$pull:{friends:myId}})
+	res.status(200).json({success:true, data:result})
 	console.log(unFriend)
 })
