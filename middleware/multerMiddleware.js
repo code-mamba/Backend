@@ -8,8 +8,20 @@ const storage = multer.diskStorage({
 	filename:function(req,file,cb){
 		const uniqueSuffix = Date.now()+'-'+Math.round(Math.random()*1e9);
 		const fileExtension = path.extname(file.originalname);
-		cb(null,uniqueSuffix+fileExtension)
+		const fileType = file.mimetype.split('/')[0]
+		const newFileName = uniqueSuffix +'.'+fileType+fileExtension
+		cb(null,newFileName)
 	}
 })
-const upload = multer({storage:storage,limits:{files:5}})
+const upload = multer({storage:storage,
+	limits:{files:5},
+	fileFilter:function(req,file,cb){
+	const alloweFileTypes=['image/jpeg','image/png','video/mp4','vide/quicktime'];
+	if(alloweFileTypes.includes(file.mimetype)){
+		cb(null,true)
+	}
+	else{
+		cb(new Error('Invalid file type'));
+	}
+}})
 module.exports = upload

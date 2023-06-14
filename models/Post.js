@@ -26,10 +26,9 @@ const PostSchema = new mongoose.Schema({
 		type:String,
 		required: [true,'Please add a post'],
 	},
-	like:{
-		type: Number,
-		default:0
-	},
+	likedby:[{
+		type:mongoose.Schema.ObjectId
+	}],
 	date:{
 		type: Date,
 		default: Date.now

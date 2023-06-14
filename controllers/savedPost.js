@@ -11,6 +11,7 @@ exports.getAllSavedPosts = asyncHandler(async(req,res,next)=>{
 	res.status(400).json({success:false,message: 'something went wrong'})
 	
 })
+
 exports.savePost = asyncHandler(async(req,res,next)=>{
 	const userId = req.params.id
 	console.log(userId);
@@ -22,8 +23,8 @@ exports.savePost = asyncHandler(async(req,res,next)=>{
 	}
 	res.status(400).json({success:false,error:"something went wrong"})
 })
+
 exports.removeSavedPost = asyncHandler(async(req,res,next)=>{
-	console.log("wloo")
 	const {userId, postId} = req.body
 	console.log(userId)
 	console.log(postId)

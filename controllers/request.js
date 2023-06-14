@@ -13,6 +13,7 @@ exports.addRequest = asyncHandler(async(req,res,next)=>{
 	 console.log(request)
 })
 
+// getting the all requested user data 
 exports.getUserRequests = asyncHandler(async(req,res,next)=>{
 	const{id} = req.params
 	const myId = id
@@ -66,4 +67,9 @@ exports.unFriend = asyncHandler(async(req,res,next)=>{
 	const result = await User.findByIdAndUpdate({_id:userId},{$pull:{friends:myId}})
 	res.status(200).json({success:true, data:result})
 	console.log(unFriend)
+})
+exports.isMyIdInPendingRequest = asyncHandler(async(req,res,next)=>{
+	const{myId,userId} = req.params
+	const data=await User.find({_id:userId},{pendingrequest:{$in:[myId]}})
+	
 })

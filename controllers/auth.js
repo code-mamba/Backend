@@ -48,10 +48,12 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   console.log(email)
   try {
     const oldUser = await User.findOne({ email });
+    console.log(oldUser)
     if (!oldUser) {
       return res.json({ message: "User Not Exist" });
     }
     const secret = process.env.JWT_SECRET + oldUser.password;
+    console.log("secret",secret)
     const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
       expiresIn: "5m",
     });
@@ -60,7 +62,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
       service:"hotmail",
       auth: {
         user: "dhanush.baskaran@aspiresys.com",
-        pass: "ThavalaiVsAnil@123",
+        pass: "Simtangaran@123",
       },
     });
 

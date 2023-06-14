@@ -27,6 +27,12 @@ const getFriends = require("./routes/getFriends")
 const friendspost = require("./routes/friendspost")
 const conversation = require("./routes/conversation")
 const messages = require('./routes/messages')
+const users = require('./routes/users')
+const videos = require('./routes/videos')
+const search = require('./routes/search')
+const comments = require('./routes/comments')
+const likes = require('./routes/like')
+
 
 const app = express();
 // Body parser
@@ -49,6 +55,12 @@ app.use("/api/v1/getfriends",getFriends)
 app.use("/api/v1/friendspost",friendspost)
 app.use("/api/v1/conversation",conversation)
 app.use("/api/v1/messages",messages)
+app.use("/api/v1/users",users)
+app.use("/api/v1/videos",videos)
+app.use("/api/v1/search",search)
+app.use("/api/v1/comments",comments)
+app.use("/api/v1/likes",likes)
+
 
 
 

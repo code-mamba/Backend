@@ -39,6 +39,9 @@ const UserSchema = new mongoose.Schema({
   relationship:{
     type:String
   },
+  dob:{
+    type:Date
+  },
 	pendingrequest:[{
 		type:mongoose.Schema.ObjectId
 	}],

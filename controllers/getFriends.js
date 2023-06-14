@@ -13,6 +13,8 @@ exports.getFriends = asyncHandler(async(req,res,next)=>{
 	}
 	res.status(200).json({success:true,data:FriendsData})
 })
+
+// This controller is used to check whether the some user is Current user's friend or not
 exports.checkFriendshipStatus = asyncHandler(async(req,res,next)=>{
 	console.log(req.params)
 	const{id,userId} = req.params
