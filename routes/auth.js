@@ -1,6 +1,5 @@
 const express = require('express')
 const {register,login, googleLogin, getMe, forgotPassword, resetPassword, setResetPassword, logout} = require('../controllers/auth')
-const{protect} = require('../middleware/auth')
 const upload = require('../middleware/multerMiddleware')
 
 

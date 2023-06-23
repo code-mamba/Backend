@@ -40,6 +40,7 @@ app.use(express.json());
 app.use(cookieParser())
 app.use(cors())
 
+
 // logger
 app.use(logger)
 app.use('/public',express.static('./public'))

@@ -2,8 +2,6 @@ const asyncHandler = require('../middleware/async')
 const Message = require('../models/Message')
 
 exports.newMessage = asyncHandler(async(req,res,next)=>{
-	console.log("hi")
-	console.log(req.body)
 	const savedMessage = await Message.create(req.body)
 	if(!savedMessage){
 		return res.status(400).json({success:false,err: "something went wrong"})

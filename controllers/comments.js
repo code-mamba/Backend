@@ -18,7 +18,7 @@ exports.newComment = asyncHandler(async(req,res,next)=>{
 })
 exports.getAllComments = asyncHandler(async(req, res, next) => {
 	const { postId } = req.params;
-	console.log(postId);
+	
 	const getComments = await Comments.aggregate([
 	  {
 		$match: { postId: new ObjectId(postId) }
@@ -38,7 +38,6 @@ exports.getAllComments = asyncHandler(async(req, res, next) => {
 		}
 	  }
 	]);
-	console.log(getComments);
 	if (!getComments) {
 	  return res.status(404).json({ success: false, error: "No comments" });
 	}
