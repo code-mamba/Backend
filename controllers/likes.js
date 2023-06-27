@@ -44,3 +44,18 @@ exports.checkisLiked = asyncHandler(async(req,res,next)=>{
 	}
 	res.status(200).json({success:true,isLiked})
 })
+
+exports.peopleWhoLiked = asyncHandler(async(req,res,next)=>{
+	const{postId} = req.params
+	const data = await Post.findById(postId,{likedby:1})
+	if(!data){
+		res.status(400).json({
+			success:false,
+			error:"The post's id not exist"
+		})
+	}
+	res.status(200).json({
+		success:true,
+		data:data
+	})
+})

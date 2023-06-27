@@ -1,17 +1,16 @@
 const asyncHandler = require("../middleware/async");
 const Post = require("../models/Post");
-// @desc  Get all Posts
-// @route Get/api/v1/posts
-// @access Public
+// Get all Posts
+// Get/api/v1/posts
+
 exports.getAllUsersPosts = asyncHandler(async (req, res, next) => {
   const posts = await Post.find();
 
   res.status(200).json({ success: true, count: posts.length, data: posts });
 
 });
-// @desc  Get single user Posts
-// @route Get/api/v1/posts/:id
-// @access Public
+// Get single user Posts
+
 exports.getSingleUserPosts = asyncHandler(async (req, res, next) => {
   console.log(req.params.id)
   const post = await Post.find({userId: req.params.id});
@@ -22,9 +21,9 @@ exports.getSingleUserPosts = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({success:true,data:post, count:post.length})
 });
-// @desc  create new posts
-// @route POST /api/v1/posts
-// @access Private
+//  create new posts
+//  POST /api/v1/posts
+
 exports.createPost = asyncHandler(async (req, res, next) => {
   const{caption,userName,userId} =req.body;
   const{filename} = req.file
@@ -42,9 +41,9 @@ exports.createPost = asyncHandler(async (req, res, next) => {
   }
   
 });
-// @desc  update posts
-// @route PUT/api/v1/posts/:id
-// @access Private
+//  update posts
+//  PUT/api/v1/posts/:id
+
 exports.updatePost = asyncHandler(async (req, res, next) => {
   const post = await Post.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
@@ -57,9 +56,9 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
 
   next(error);
 });
-// @desc delete posts
-// @route Delete/api/v1/posts/:id
-// @access Private
+//  delete posts
+//  Delete/api/v1/posts/:id
+
 exports.deletePost = asyncHandler(async (req, res, next) => {
   const post = await Post.findByIdAndDelete(req.params.id);
 

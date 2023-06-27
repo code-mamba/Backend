@@ -32,3 +32,29 @@ exports.profileUpdate = asyncHandler(async(req,res,next)=>{
 	}
 	
 })
+exports.isBirthdayToday = asyncHandler(async(req,res,next)=>{
+	const {userId} = req.params
+	// const userFound = await User.find({
+	// 	$expr: {
+	// 	  $and: [
+	// 		{ $eq: [{ $dayOfMonth: '$dob' }, { $dayOfMonth: new Date() }] },
+	// 		{ $eq: [{ $month: '$dob' }, { $month: new Date() }] },
+	// 	  ],
+	// 	},
+	//   });
+	//   console.log("userFound",userFound)
+	  const myFriend = await User.findById(userId,{friends:1})
+	  const myFriendIds = myFriend.friends.map((friendId)=>friendId.toString())
+	  const myfriendData = await User.find({
+		_id:{$in:myFriendIds},
+		$expr:{
+			$and:[
+				{$eq:[{$dayOfMonth:"$dob"},{$dayOfMonth: new Date()}]},
+				{$eq:[{$month:"$dob"},{$month:new Date()}]}
+			]
+		}
+	  },{
+		_id:1,name:1,email:1,dob:1
+	  })
+	  res.status(200).json({succes:true,data:myfriendData})
+})

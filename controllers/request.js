@@ -5,6 +5,7 @@ const{ObjectId} = require('mongodb')
 
 /*this method is to adding the current user's id to the another user's pending request */
 exports.addRequest = asyncHandler(async(req,res,next)=>{
+	console.log("hello")
 	const{userId,myId} = req.body
 	const request = await User.findByIdAndUpdate({_id: new ObjectId(userId)},{$push:{pendingrequest :new ObjectId(myId)}})
 	 if(!request){
