@@ -32,6 +32,7 @@ const videos = require('./routes/videos')
 const search = require('./routes/search')
 const comments = require('./routes/comments')
 const likes = require('./routes/like')
+const stories = require('./routes/stories')
 
 
 const app = express();
@@ -61,6 +62,7 @@ app.use("/api/v1/videos",videos)
 app.use("/api/v1/search",search)
 app.use("/api/v1/comments",comments)
 app.use("/api/v1/likes",likes)
+app.use("/api/v1/stories",stories)
 
 
 

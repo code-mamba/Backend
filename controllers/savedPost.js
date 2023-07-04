@@ -19,7 +19,7 @@ exports.savePost = asyncHandler(async(req,res,next)=>{
 	
 	const {postId} = req.body
 	
-	const saved = await Post.findByIdAndUpdate({_id: new ObjectId(postId)},{$push:{savedby:new ObjectId(userId)}})
+	const saved = await Post.findByIdAndUpdate({_id: new ObjectId(postId)},{$push:{savedby:new ObjectId(userId)}}).sort({date:-1})
 	if(saved){
 		return res.status(200).json({success:true,saved})
 	}

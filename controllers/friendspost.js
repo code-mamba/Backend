@@ -5,7 +5,7 @@ const User = require("../models/User")
 exports.getAllFriendsPost = asyncHandler(async(req,res,next)=>{
 	const{id} = req.params
 	const friendsId = await User.findById(id,{friends:1})
-	const friendsPost = await Post.find({userId:{$in:friendsId.friends}})
+	const friendsPost = await Post.find({userId:{$in:friendsId.friends}}).sort({date:-1})
 	if(!friendsPost){
 		return res.status(400).json({success:false,message:'something went wrong'})
 	}

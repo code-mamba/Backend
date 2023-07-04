@@ -4,7 +4,7 @@ const Post = require("../models/Post");
 // Get/api/v1/posts
 
 exports.getAllUsersPosts = asyncHandler(async (req, res, next) => {
-  const posts = await Post.find();
+  const posts = await Post.find().sort({date:-1});
 
   res.status(200).json({ success: true, count: posts.length, data: posts });
 
